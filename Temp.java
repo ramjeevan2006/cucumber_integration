@@ -126,3 +126,54 @@ public class FieldMapper {
         }
     }
 }
+
+
+
+import java.util.Arrays;
+import java.util.List;
+
+public class MainProgram {
+
+    public static void main(String[] args) {
+        // Sample data for MainframeResponseVo
+        MainframeResponseVo mainFrameResponse1 = new MainframeResponseVo("123", "John Doe", 30, "1990-01-15", 720, "New York", "10001", 1000.0);
+        MainframeResponseVo mainFrameResponse2 = new MainframeResponseVo("456", "Jane Doe", 25, "1995-02-20", 680, "Los Angeles", "90001", 1500.0);
+        MainframeResponseVo mainFrameResponse3 = new MainframeResponseVo("789", "Jim Beam", 40, "1980-03-25", 700, "Chicago", "60001", 2000.0);
+
+        // Sample data for CasandraResponseVo
+        CasandraResponseVo casandraResponse1 = new CasandraResponseVo("123", "John Doe", 30, "1990-01-15", 720, "New York", "9876");
+        CasandraResponseVo casandraResponse2 = new CasandraResponseVo("456", "Jane Doe", 25, "1995-02-20", 680, "Los Angeles", "5432");
+        CasandraResponseVo casandraResponse3 = new CasandraResponseVo("789", "Jim Beam", 40, "1980-03-25", 700, "Chicago", "1010");
+
+        // User selected fields and mainframe fields
+        List<String> userSelectedFieldsList = Arrays.asList("accountId", "name", "age", "dob", "creditScore", "city", "ssn");
+        List<String> mainFrameFields = Arrays.asList("accountId", "name", "age", "dob", "creditScore", "city", "zipCode", "amount");
+
+        // Flags
+        boolean everythingFromMainFrames = true;
+        boolean cardOpenedWithinSixDays = false;
+
+        // Map and print FinalVo for each set of records
+        FinalVo finalVo1 = FieldMapper.mapFields(mainFrameResponse1, casandraResponse1, userSelectedFieldsList, mainFrameFields, everythingFromMainFrames, cardOpenedWithinSixDays);
+        printFinalVo(finalVo1);
+
+        FinalVo finalVo2 = FieldMapper.mapFields(mainFrameResponse2, casandraResponse2, userSelectedFieldsList, mainFrameFields, everythingFromMainFrames, cardOpenedWithinSixDays);
+        printFinalVo(finalVo2);
+
+        FinalVo finalVo3 = FieldMapper.mapFields(mainFrameResponse3, casandraResponse3, userSelectedFieldsList, mainFrameFields, everythingFromMainFrames, cardOpenedWithinSixDays);
+        printFinalVo(finalVo3);
+    }
+
+    private static void printFinalVo(FinalVo finalVo) {
+        System.out.println("FinalVo {");
+        System.out.println("  accountId='" + finalVo.getAccountId() + "',");
+        System.out.println("  name='" + finalVo.getName() + "',");
+        System.out.println("  age=" + finalVo.getAge() + ",");
+        System.out.println("  dob='" + finalVo.getDob() + "',");
+        System.out.println("  creditScore=" + finalVo.getCreditScore() + ",");
+        System.out.println("  city='" + finalVo.getCity() + "',");
+        System.out.println("  ssn='" + finalVo.getSsn() + "'");
+        System.out.println("}\n");
+    }
+}
+
